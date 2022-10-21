@@ -4,14 +4,36 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Singleton
+    private static PlayerController instance;
+    public static PlayerController GetInstance()
+    {
+        if (instance == null)
+        {
+            GameObject playerControllerGameObject = GameObject.Find("Player");
+            if (playerControllerGameObject != null) instance = playerControllerGameObject.GetComponent<PlayerController>();
+            if (instance == null) Debug.LogError("PlayerController Prefab is missing in the scene!");
+        }
+        return instance;
+    }
+    #endregion
+
+    // Tweakables
     public float maxNrOfLives;
     public float moveSpeed;
     public float dashSpeed;
     public float dashDuration;
+    public ItemController equippedItem;
+    
 
+    // References
+    public List<BaseItem> inventory;
+    public GameObject itemPivot;
+
+
+    // Internal State
     private PlayerState playerState;
     private float nrOfLives;
-
 
     [HideInInspector] public Rigidbody2D rb;
 
@@ -37,20 +59,46 @@ public class PlayerController : MonoBehaviour
     {
         playerState?.OnStateUpdate();
 
-        if(playerState != null && playerState.allowShooting) Shoot();
+        if(playerState != null && playerState.allowShooting) UseItem();
 
         if (playerState != null && playerState.allowDashing) Dash();
+
+        ChangeItem();
         
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         playerState?.OnStateFixedUpdate();
     }
 
 
-    private void Shoot()
+    public void PickUpItem(BaseItem baseItem)
     {
+        inventory.Add(baseItem);
+        if (inventory.Count == 1) Equip(baseItem);
+
+        PlayerUI.GetInstance().UpdateInventory();
+    }
+
+
+
+    private void Equip(BaseItem baseItem)
+    {
+        if(equippedItem != null) Destroy(equippedItem.gameObject);
+
+        equippedItem = Instantiate(baseItem.prefab, itemPivot.transform).GetComponent<ItemController>();
+        equippedItem.Equip();
+        PlayerUI.GetInstance().UpdateInventory();
+    }
+
+
+    private void UseItem()
+    {
+        if(equippedItem != null)
+        {
+            equippedItem.Use();
+        }
 
         //Vector2 joystickInput = new Vector2(Input.GetAxis("Horizontal2"), Input.GetAxis("Vertical2") * (-1));
         //bool firePressed = Input.GetMouseButton(0) || joystickInput.magnitude > 0.3f; // Input.GetKey("joystick 1 button 5");
@@ -76,5 +124,36 @@ public class PlayerController : MonoBehaviour
     private void Dash()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift)) ChangePlayerState(new PlayerStateDashing(this));
+    }
+
+    /// <summary>
+    /// Equip another item
+    /// </summary>
+    private void ChangeItem()
+    {
+
+        // Scroll wheel to change item
+
+        float scrollDelta = Input.mouseScrollDelta.y;
+
+        if (scrollDelta != 0)
+        {
+            // Determine currently equipped item
+            int currentItemIndex = 0;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] == equippedItem.baseItem)
+                {
+                    currentItemIndex = i;
+                    break;
+                }
+            }
+
+            // Equip next / previous item
+            if (scrollDelta < 0 && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
+            if (scrollDelta > 0 && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
+
+        }
+
     }
 }
