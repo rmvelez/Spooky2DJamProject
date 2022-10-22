@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Normal Gun
   m_EditorClassIdentifier: 
   name: Normal Gun
-  ingameIcon: {fileID: 21300000, guid: 02fe5bffd832eb947af998580d742bfe, type: 3}
-  inventoryIcon: {fileID: 21300000, guid: a992c75cc7384b54885bdb57dca960ba, type: 3}
+  ingameIcon: {fileID: -5998924230632997364, guid: ece7a0f1751200042a1914bb8216b606, type: 3}
+  inventoryIcon: {fileID: -9025246451835624311, guid: ece7a0f1751200042a1914bb8216b606, type: 3}
   prefab: {fileID: 6258144684597467738, guid: 4384dd8d93f951e4b9104995e9cce2c3, type: 3}

@@ -50,7 +50,7 @@ public abstract class ItemController : MonoBehaviour
     {
         if(currentCooldown > 0)
         {
-            Debug.Log($"{baseItem.name} is on cooldown for {currentCooldown} more seconds.");
+            //Debug.Log($"{baseItem.name} is on cooldown for {currentCooldown} more seconds.");
             return;
         }
     }

@@ -25,6 +25,7 @@ public class PlayerStateDashing : PlayerState
     public override void OnStateExit()
     {
         playerController.rb.velocity = Vector2.zero;
+        playerController.currentDashCooldown = playerController.dashCooldown;
     }
 
     public override void OnStateFixedUpdate()

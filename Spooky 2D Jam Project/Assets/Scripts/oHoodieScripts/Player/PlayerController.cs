@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public float startingNrOfLives;
     public float moveSpeed;
     public float dashSpeed;
+    public float dashCooldown;
     public float dashDuration;
     public float equippedItemDistance;
     public ItemController equippedItem;
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     // Internal State
     private PlayerState playerState;
+    [HideInInspector] public float currentDashCooldown = 0;
     [HideInInspector] public float nrOfLives;
 
     [HideInInspector] public Rigidbody2D rb;
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         nrOfLives = startingNrOfLives;
+        if (inventory.Count > 0) Equip(inventory[0]);
 
         PlayerUI.GetInstance().UpdateInventory();
         PlayerUI.GetInstance().UpdateLives();
@@ -55,7 +58,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void ChangePlayerState(PlayerState newPlayerState)
     {
-        Debug.Log($"Change Player State [{playerState} -> {newPlayerState}]");
+        //Debug.Log($"Change Player State [{playerState} -> {newPlayerState}]");
         if (playerState != null) playerState.OnStateExit();
         playerState = newPlayerState;
         playerState.OnStateEnter();
@@ -64,6 +67,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     // Update is called once per frame
     void Update()
     {
+        if (currentDashCooldown > 0) currentDashCooldown -= Time.deltaTime;
+
         playerState?.OnStateUpdate();
 
         if(playerState != null && playerState.allowItemUse) UseItem();
@@ -120,6 +125,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Dash()
     {
+        if (currentDashCooldown > 0) return;
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Space)) ChangePlayerState(new PlayerStateDashing(this));
     }
 

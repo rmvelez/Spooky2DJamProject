@@ -14,9 +14,6 @@ public class PlayerStateIdle : PlayerState
         allowDashing = false;
         allowItemUse = true;
         mirrorLeftRight = false;
-
-        Debug.Log("IDLE ENTER");
-
         
     }
 
