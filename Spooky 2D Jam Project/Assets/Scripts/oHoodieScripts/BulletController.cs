@@ -9,6 +9,7 @@ public class BulletController : MonoBehaviour
     [SerializeField] private float damage;
     [SerializeField] private float speed;
     [SerializeField] private Animator animator;
+    [SerializeField] private new Collider2D collider;
     
     private Vector2 moveVector;
 
@@ -36,7 +37,7 @@ public class BulletController : MonoBehaviour
     {
         moveVector = Vector2.zero;
         animator.SetTrigger("Hit");
-
+        collider.enabled = false;
         IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
 
         if (damagable != null) damagable.TakeDamage(damage);

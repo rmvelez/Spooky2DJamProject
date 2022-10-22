@@ -8,6 +8,7 @@ public abstract class PlayerState
     
     public bool allowItemUse;
     public bool allowDashing;
+    public bool mirrorLeftRight;
 
     public PlayerState(PlayerController playerController)
     {

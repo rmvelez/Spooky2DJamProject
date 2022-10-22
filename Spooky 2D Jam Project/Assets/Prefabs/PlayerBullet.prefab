@@ -138,6 +138,7 @@ MonoBehaviour:
   damage: 0.5
   speed: 15
   animator: {fileID: 6143692379451897438}
+  collider: {fileID: 8834817727509320613}
 --- !u!50 &2436205618941021970
 Rigidbody2D:
   serializedVersion: 4

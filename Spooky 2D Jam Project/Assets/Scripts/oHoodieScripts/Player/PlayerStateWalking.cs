@@ -13,6 +13,7 @@ public class PlayerStateWalking : PlayerState
     {
         allowDashing = true;
         allowItemUse = true;
+        mirrorLeftRight = true;
     }
 
     public override void OnStateExit()

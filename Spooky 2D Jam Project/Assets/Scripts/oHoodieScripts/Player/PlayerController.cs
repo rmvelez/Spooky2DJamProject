@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     #endregion
 
     // Tweakables
-    public float maxNrOfLives;
+    public float startingNrOfLives;
     public float moveSpeed;
     public float dashSpeed;
     public float dashDuration;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     // Internal State
     private PlayerState playerState;
-    private float nrOfLives;
+    [HideInInspector] public float nrOfLives;
 
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public  Animator animator;
@@ -46,7 +46,10 @@ public class PlayerController : MonoBehaviour, IDamagable
         playerState = new PlayerStateIdle(this);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        nrOfLives = maxNrOfLives;
+        nrOfLives = startingNrOfLives;
+
+        PlayerUI.GetInstance().UpdateInventory();
+        PlayerUI.GetInstance().UpdateLives();
     }
 
 
@@ -65,11 +68,11 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         if(playerState != null && playerState.allowItemUse) UseItem();
         if (playerState != null && playerState.allowDashing) Dash();
+        if(playerState != null && playerState.mirrorLeftRight) FlipLeftRight();
 
-        FlipLeftRight();
         ChangeItem();
         Aim();
-        
+
     }
 
     void FixedUpdate()
@@ -157,7 +160,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     /// </summary>
     private void Aim()
     {
-        if (equippedItem == null) return;
+
 
         Vector2 joystickInput = new Vector2(Input.GetAxis("Horizontal2"), Input.GetAxis("Vertical2") * (-1));
 
@@ -166,8 +169,10 @@ public class PlayerController : MonoBehaviour, IDamagable
         mouseAim = mouseAim - new Vector2(transform.position.x, transform.position.y);
         aimVector = joystickInput.magnitude > 0.3f ? joystickInput : mouseAim;
 
-        equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * equippedItemDistance;
 
+        if (equippedItem == null) return;
+
+        equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * equippedItemDistance;
         float angle = Vector2.Angle(Vector2.up, aimVector);
         equippedItem.transform.rotation = Quaternion.Euler(0, 0, (aimVector.x > 0 ? 360 - angle : angle));
     }
@@ -181,7 +186,11 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         nrOfLives -= amount;
         if (nrOfLives < 0) nrOfLives = 0;
-        if (nrOfLives > maxNrOfLives) nrOfLives = maxNrOfLives;
         PlayerUI.GetInstance().UpdateLives();
+
+        if(nrOfLives <= 0)
+        {
+            ChangePlayerState(new PlayerStateDying(this));
+        }
     }
 }

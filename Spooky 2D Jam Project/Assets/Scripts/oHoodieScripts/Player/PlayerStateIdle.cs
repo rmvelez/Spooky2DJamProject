@@ -13,6 +13,11 @@ public class PlayerStateIdle : PlayerState
     {
         allowDashing = false;
         allowItemUse = true;
+        mirrorLeftRight = false;
+
+        Debug.Log("IDLE ENTER");
+
+        
     }
 
     public override void OnStateExit()
@@ -25,7 +30,9 @@ public class PlayerStateIdle : PlayerState
 
     public override void OnStateUpdate()
     {
+        playerController.animator.SetTrigger("IdleFront");
+
         // Idle -> Walking
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) playerController.ChangePlayerState(new PlayerStateWalking(playerController));
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) playerController.ChangePlayerState(new PlayerStateWalking(playerController));
     }
 }

@@ -16,6 +16,7 @@ public class PlayerStateDashing : PlayerState
     {
         allowDashing = false;
         allowItemUse = false;
+        mirrorLeftRight = true;
 
         dashVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * playerController.dashSpeed;
         dashTimeLeft = playerController.dashDuration;
