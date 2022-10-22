@@ -8,6 +8,12 @@ public class TVRemoteController : ItemController
 
     public override void Use()
     {
-        Debug.Log("Used TV Remote!");
+        base.Use();
+
+        if (cooldown <= 0)
+        {
+            // Turn on TV
+
+        }
     }
 }

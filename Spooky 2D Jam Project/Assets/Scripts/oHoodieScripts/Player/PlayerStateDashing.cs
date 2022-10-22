@@ -15,7 +15,8 @@ public class PlayerStateDashing : PlayerState
     public override void OnStateEnter()
     {
         allowDashing = false;
-        allowShooting = false;
+        allowItemUse = false;
+        mirrorLeftRight = true;
 
         dashVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * playerController.dashSpeed;
         dashTimeLeft = playerController.dashDuration;
@@ -24,6 +25,7 @@ public class PlayerStateDashing : PlayerState
     public override void OnStateExit()
     {
         playerController.rb.velocity = Vector2.zero;
+        playerController.currentDashCooldown = playerController.dashCooldown;
     }
 
     public override void OnStateFixedUpdate()

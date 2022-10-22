@@ -13,7 +13,8 @@ public class PlayerStateDying : PlayerState
     public override void OnStateEnter()
     {
         allowDashing = false;
-        allowShooting = false;
+        allowItemUse = false;
+        mirrorLeftRight = false;
     }
 
     public override void OnStateExit()
@@ -28,6 +29,7 @@ public class PlayerStateDying : PlayerState
 
     public override void OnStateUpdate()
     {
+        playerController.animator.SetTrigger("Dying");
 
     }
 }

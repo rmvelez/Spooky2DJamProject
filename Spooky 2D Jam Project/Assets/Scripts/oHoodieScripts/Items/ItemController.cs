@@ -9,10 +9,22 @@ using UnityEngine;
 public abstract class ItemController : MonoBehaviour
 {
     public BaseItem baseItem;
+    public float cooldown;
+    
     public SpriteRenderer spriteRenderer;
 
 
     private PlayerController playerController;
+    protected PlayerController PlayerController
+    {
+        get
+        {
+            if(playerController == null) playerController = PlayerController.GetInstance();
+            return playerController;
+        }
+    }
+
+    protected float currentCooldown;
 
     public ItemController(PlayerController playerController)
     {
@@ -20,18 +32,28 @@ public abstract class ItemController : MonoBehaviour
     }
 
 
-    private void Start()
+    void Start()
     {
-        playerController = PlayerController.GetInstance();
         if (baseItem != null && !IsEquipped()) spriteRenderer.sprite = baseItem.inventoryIcon;
     }
 
+    void Update()
+    {
+        currentCooldown -= Time.deltaTime;
+    }
 
     /// <summary>
     /// Use the item (in direction of mouse or right joystick)
     /// What happens is determined by the class implementing the method
     /// </summary>
-    public abstract void Use();
+    public virtual void Use()
+    {
+        if(currentCooldown > 0)
+        {
+            //Debug.Log($"{baseItem.name} is on cooldown for {currentCooldown} more seconds.");
+            return;
+        }
+    }
 
 
     /// <summary>
@@ -46,7 +68,7 @@ public abstract class ItemController : MonoBehaviour
         }
         else
         {
-            playerController.PickUpItem(baseItem);
+            PlayerController.PickUpItem(baseItem);
             Destroy(this.gameObject);
         }
 
@@ -54,8 +76,8 @@ public abstract class ItemController : MonoBehaviour
 
     protected bool IsEquipped()
     {
-        if (playerController == null) return false;
-        return playerController.equippedItem != null && playerController.equippedItem == this;
+        if (PlayerController == null) return false;
+        return PlayerController.equippedItem != null && PlayerController.equippedItem == this;
     }
 
     /// <summary>
@@ -64,6 +86,7 @@ public abstract class ItemController : MonoBehaviour
     public void Equip()
     {
         spriteRenderer.sprite = baseItem.ingameIcon;
+        GetComponent<Collider2D>().enabled = false;
     }
 }
 

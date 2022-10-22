@@ -1,13 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
     public PlayerController playerController;
     public RectTransform itemUIPrefab;
+    public RectTransform heartUIPrefab;
+    public Sprite heartFullSprite;
+    public Sprite heartHalfSprite;
+    
     public RectTransform inventoryPanel;
+    public RectTransform heartPanel;
+
     private List<ItemUI> itemUIs = new List<ItemUI>();
+    private List<Image> heartImages = new List<Image>();
 
     #region Singleton
     private static PlayerUI instance;
@@ -28,7 +36,41 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     public void UpdateLives()
     {
+        float livesToDraw = playerController.nrOfLives;
+        int imgIndex = 0;
 
+        while (livesToDraw > 0)
+        {
+            // Get next image (add new one if needed)
+            if (heartImages.Count <= imgIndex)
+            {
+                Image newHeartImg = Instantiate(heartUIPrefab, heartPanel).GetComponent<Image>();
+                heartImages.Add(newHeartImg);
+            }
+
+            // Draw a whole heart
+            if (livesToDraw >= 1)
+            {
+                heartImages[imgIndex].sprite = heartFullSprite;
+            }
+            // Draw half a heart
+            else
+            {
+                heartImages[imgIndex].sprite = heartHalfSprite;
+            }
+
+            livesToDraw--;
+            imgIndex++;
+        }
+
+
+        // Remove unneeded hearts
+        while (heartImages.Count > playerController.nrOfLives + 0.5f)
+        {
+            Image imageToRemove = heartImages[heartImages.Count - 1];
+            heartImages.Remove(imageToRemove);
+            Destroy(imageToRemove.gameObject);
+        }
     }
 
 
