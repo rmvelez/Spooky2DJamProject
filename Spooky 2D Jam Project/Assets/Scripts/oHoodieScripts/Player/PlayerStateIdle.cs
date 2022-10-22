@@ -11,7 +11,8 @@ public class PlayerStateIdle : PlayerState
 
     public override void OnStateEnter()
     {
-
+        allowDashing = false;
+        allowItemUse = true;
     }
 
     public override void OnStateExit()

@@ -11,13 +11,13 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - UniversalBullet
+  - FriendlyBullet
+  - EnemyBullet
+  - Enemy
+  - Player
+  - Item
+  - Wall
   - 
   - 
   - 

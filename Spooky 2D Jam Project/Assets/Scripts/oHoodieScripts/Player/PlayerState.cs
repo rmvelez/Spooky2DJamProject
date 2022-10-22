@@ -6,7 +6,7 @@ public abstract class PlayerState
 {
     protected PlayerController playerController;
     
-    public bool allowShooting;
+    public bool allowItemUse;
     public bool allowDashing;
 
     public PlayerState(PlayerController playerController)

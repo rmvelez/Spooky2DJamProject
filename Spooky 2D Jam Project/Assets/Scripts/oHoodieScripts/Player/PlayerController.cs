@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
     #region Singleton
     private static PlayerController instance;
@@ -37,12 +37,15 @@ public class PlayerController : MonoBehaviour
     private float nrOfLives;
 
     [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public  Animator animator;
+    [HideInInspector] public Vector2 aimVector;
 
     // Start is called before the first frame update
     void Start()
     {
         playerState = new PlayerStateIdle(this);
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         nrOfLives = maxNrOfLives;
     }
 
@@ -60,10 +63,10 @@ public class PlayerController : MonoBehaviour
     {
         playerState?.OnStateUpdate();
 
-        if(playerState != null && playerState.allowShooting) UseItem();
-
+        if(playerState != null && playerState.allowItemUse) UseItem();
         if (playerState != null && playerState.allowDashing) Dash();
 
+        FlipLeftRight();
         ChangeItem();
         Aim();
         
@@ -84,6 +87,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Scales the gameobject by -1 when walking left
+    /// </summary>
+    private void FlipLeftRight()
+    {
+        transform.localScale = new Vector3(1 * (aimVector.x < 0 ? -1 : 1), 1, 1);
+    }
+
 
     private void Equip(BaseItem baseItem)
     {
@@ -97,35 +108,16 @@ public class PlayerController : MonoBehaviour
 
     private void UseItem()
     {
-        if(equippedItem != null)
+        if(equippedItem != null && Input.GetMouseButton(0))
         {
             equippedItem.Use();
         }
 
-        //Vector2 joystickInput = new Vector2(Input.GetAxis("Horizontal2"), Input.GetAxis("Vertical2") * (-1));
-        //bool firePressed = Input.GetMouseButton(0) || joystickInput.magnitude > 0.3f; // Input.GetKey("joystick 1 button 5");
-        //if (hp > 0 && currentShotCooldown <= 0 && firePressed)
-        //{
-        //    // Get Input ( prefer Controller over Mouse)
-        //    Vector2 mouseAim = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //    mouseAim = mouseAim - new Vector2(shotSpawn.transform.position.x, shotSpawn.transform.position.y);
-
-        //    Vector2 aimVector = joystickInput.magnitude > 0.3f ? joystickInput : mouseAim;
-
-        //    // Shoot
-        //    ShotController shot = GameObject.Instantiate(shotPrefab).GetComponent<ShotController>();
-        //    shot.gameObject.transform.position = shotSpawn.transform.position;
-        //    shot.gameObject.transform.localScale = new Vector3(.5f, .5f, 1);
-        //    shot.Shoot(true, shotSpeed, shotDamage, aimVector, null, 1f);
-        //    currentShotCooldown = shotCooldown;
-        //}
-
-        //currentShotCooldown -= Time.deltaTime;
     }
 
     private void Dash()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift)) ChangePlayerState(new PlayerStateDashing(this));
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Space)) ChangePlayerState(new PlayerStateDashing(this));
     }
 
     /// <summary>
@@ -172,12 +164,24 @@ public class PlayerController : MonoBehaviour
         // Get Input ( prefer Controller over Mouse)
         Vector2 mouseAim = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseAim = mouseAim - new Vector2(transform.position.x, transform.position.y);
-        Vector2 aimVector = joystickInput.magnitude > 0.3f ? joystickInput : mouseAim;
+        aimVector = joystickInput.magnitude > 0.3f ? joystickInput : mouseAim;
 
         equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * equippedItemDistance;
 
         float angle = Vector2.Angle(Vector2.up, aimVector);
-        Debug.Log($"Angle: {angle}");
         equippedItem.transform.rotation = Quaternion.Euler(0, 0, (aimVector.x > 0 ? 360 - angle : angle));
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="amount"></param>
+    public void TakeDamage(float amount)
+    {
+        nrOfLives -= amount;
+        if (nrOfLives < 0) nrOfLives = 0;
+        if (nrOfLives > maxNrOfLives) nrOfLives = maxNrOfLives;
+        PlayerUI.GetInstance().UpdateLives();
     }
 }

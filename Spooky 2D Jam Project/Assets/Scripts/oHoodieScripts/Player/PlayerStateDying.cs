@@ -13,7 +13,7 @@ public class PlayerStateDying : PlayerState
     public override void OnStateEnter()
     {
         allowDashing = false;
-        allowShooting = false;
+        allowItemUse = false;
     }
 
     public override void OnStateExit()

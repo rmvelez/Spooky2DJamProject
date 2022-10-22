@@ -15,7 +15,7 @@ public class PlayerStateDashing : PlayerState
     public override void OnStateEnter()
     {
         allowDashing = false;
-        allowShooting = false;
+        allowItemUse = false;
 
         dashVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * playerController.dashSpeed;
         dashTimeLeft = playerController.dashDuration;

@@ -12,7 +12,7 @@ public class PlayerStateWalking : PlayerState
     public override void OnStateEnter()
     {
         allowDashing = true;
-        allowShooting = true;
+        allowItemUse = true;
     }
 
     public override void OnStateExit()
@@ -32,6 +32,27 @@ public class PlayerStateWalking : PlayerState
         {
             playerController.rb.velocity = moveVector * playerController.moveSpeed;
         }
+
+
+        // Play the right anim
+
+        // Side (when aiming to left/right)
+        if(Mathf.Abs(playerController.aimVector.x) > Mathf.Abs(playerController.aimVector.y))
+        {
+            playerController.animator.SetTrigger("WalkSide");
+        }
+        // Back (when aiming up)
+        else if (playerController.aimVector.y > Mathf.Abs(playerController.aimVector.x))
+        {
+            playerController.animator.SetTrigger("WalkBack");
+        }
+        // Front (when aiming down)
+        else
+        {
+            playerController.animator.SetTrigger("WalkFront");
+        }
+
+
 
 
         // Transition to other states
