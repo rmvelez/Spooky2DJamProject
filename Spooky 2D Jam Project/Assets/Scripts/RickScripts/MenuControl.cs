@@ -20,6 +20,11 @@ public class MenuControl : MonoBehaviour
         ShowScreen(menu);
     }
 
+    public void PlayGame()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
+
     public void MainMenu()
     {
         currentGameState = GameState.MenuState;

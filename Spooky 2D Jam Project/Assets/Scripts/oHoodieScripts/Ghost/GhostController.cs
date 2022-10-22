@@ -15,6 +15,7 @@ public class GhostController : MonoBehaviour, IDamagable
     public float maxAttackTime;
     public float minWalkTime;
     public float maxWalkTime;
+    public Collider2D damageTriggerCollider;
 
     private float nrOfLives;
     private Vector3 stateStartPos;
@@ -76,7 +77,6 @@ public class GhostController : MonoBehaviour, IDamagable
             // Fade out
             else if (ghostState.currentStateTime > ghostState.totalStateTime - fadeTime)
             {
-
                 float fadeProgress = (ghostState.currentStateTime - (ghostState.totalStateTime - fadeTime)) / fadeTime;
                 spriteRenderer.color = new Color(1, 1, 1, alphaWhenVisible * (1 - fadeProgress));
             }

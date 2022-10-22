@@ -22,11 +22,14 @@ public class GhostStateAttacking : GhostState
         ghostController.targetPosition = GetTargetPosition();
 
         ghostController.animator.SetTrigger("Attack");
+        ghostController.damageTriggerCollider.enabled = true;
 
     }
 
     public override void OnStateExit()
     {
+        ghostController.damageTriggerCollider.enabled = false;
+
     }
 
     public override void OnStateFixedUpdate()
