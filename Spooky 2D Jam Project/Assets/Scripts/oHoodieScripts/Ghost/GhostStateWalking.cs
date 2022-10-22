@@ -12,22 +12,21 @@ public class GhostStateWalking : GhostState
 
     public override void OnStateEnter()
     {
+        totalStateTime = Random.Range(ghostController.minWalkTime, ghostController.maxWalkTime);
+        currentStateTime = 0;
+
         pauseTime = Random.Range(1f, 2f);
-        moveSpeed = ghostController.MoveSpeedInWalkState;
         useFading = true;
         ghostController.animator.SetTrigger("Walk");
 
+        if(ghostController.hasWalkedBefore) ghostController.transform.position = GetWalkingStartPosition();
         ghostController.targetPosition = GetNewTargetPosition();
 
-        if (ghostController.fadeState == GhostController.FadeState.Invisible)
-        {
-            ghostController.fadeState = GhostController.FadeState.FadingIn;
-        }
     }
 
     public override void OnStateExit()
     {
-        ghostController.fadeState = GhostController.FadeState.Invisible;
+        ghostController.hasWalkedBefore = true;
     }
 
     public override void OnStateFixedUpdate()
@@ -36,42 +35,42 @@ public class GhostStateWalking : GhostState
 
     public override void OnStateUpdate()
     {
-        if (!isPausing)
+        currentStateTime += Time.deltaTime;
+
+        // Transition to new State 
+        if (currentStateTime >= totalStateTime)
         {
-            // Transition to new State 
-            if (Vector3.Distance(ghostController.transform.position, ghostController.targetPosition) == 0)
+            // 33% Chance to walk again
+            if (Random.Range(0, 3) > 1)
             {
-                isPausing = true;
-                moveSpeed = 0;
+                ghostController.ChangeGhostState(new GhostStateWalking(ghostController));
+            }
+            // 66% chance to attack
+            else
+            {
+                ghostController.ChangeGhostState(new GhostStateAttacking(ghostController));
             }
         }
-        else
-        {
-            ghostController.fadeState = GhostController.FadeState.Invisible;
-            pauseTime -= Time.deltaTime;
-
-            if(pauseTime <= 0)
-            {
-                // 33% Chance to walk again
-                if (Random.Range(0, 3) > 1)
-                {
-                    ghostController.ChangeGhostState(new GhostStateWalking(ghostController));
-                }
-                // 66% chance to attack
-                else
-                {
-                    ghostController.ChangeGhostState(new GhostStateAttacking(ghostController));
-                }
-            }
-        }
-
     }
 
     private Vector3 GetNewTargetPosition()
     {
-        Vector3 targetPosition = ghostController.transform.position;
-        Vector3 ghostToPlayer = ghostController.playerController.transform.position - ghostController.transform.position;
-        targetPosition += new Vector3(ghostToPlayer.x * Random.Range(-0.5f, 1.5f), ghostToPlayer.y * Random.Range(-0.5f, 1.5f));
-        return targetPosition;
+        //Vector3 targetPosition = ghostController.transform.position;
+        //Vector3 ghostToPlayer = ghostController.playerController.transform.position - ghostController.transform.position;
+        //targetPosition += new Vector3(ghostToPlayer.x * Random.Range(-0.5f, 1.5f), ghostToPlayer.y * Random.Range(-0.5f, 1.5f));
+        //return targetPosition;
+
+        int signX = Random.Range(0, 2) == 0 ? 1 : -1;
+        int signY = Random.Range(0, 2) == 0 ? 1 : -1;
+
+        return new Vector3(ghostController.playerController.transform.position.x, ghostController.playerController.transform.position.y) + new Vector3(Random.Range(3f, 5f) * signX, Random.Range(3f, 5f) * signY);
+    }
+
+    private Vector3 GetWalkingStartPosition()
+    {
+        int signX = Random.Range(0, 2) == 0 ? 1 : -1;
+        int signY = Random.Range(0, 2) == 0 ? 1 : -1;
+
+        return new Vector3(ghostController.playerController.transform.position.x, ghostController.playerController.transform.position.y) + new Vector3(Random.Range(3f, 5f) * signX, Random.Range(3f, 5f) * signY);
     }
 }

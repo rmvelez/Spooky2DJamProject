@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2864557289356640013}
   - component: {fileID: 5091595378572643090}
   - component: {fileID: 8557531253240091246}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,10 +47,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60f4c757aaad5446aee63ab76dc8be2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingNrOfLives: 5
+  startingNrOfLives: 30
   lootPrefab: {fileID: 0}
+  distanceToSpawn: 5
+  alphaWhenVisible: 0.8
+  fadeTime: 0.25
+  appearDistance: 7
+  damage: 1
+  minAttackTime: 1.5
+  maxAttackTime: 1.8
+  minWalkTime: 1
+  maxWalkTime: 2
+  hasWalkedBefore: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
+  playerController: {fileID: 0}
+  collider: {fileID: 5091595378572643090}
+  spriteRenderer: {fileID: 6813341344790583028}
+  targetPosition: {x: 0, y: 0, z: 0}
 --- !u!212 &6813341344790583028
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -90,7 +104,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 30000
   m_Sprite: {fileID: 3507483189343021040, guid: dc2133148e92c6e4cb0041896fd01c18, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -134,8 +148,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 2.4, y: 2.4}
+  m_Offset: {x: 0, y: 0.41}
+  m_Size: {x: 0.79, y: 1.86}
   m_Direction: 0
 --- !u!50 &8557531253240091246
 Rigidbody2D:

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageKeyController : ItemController
+public class EmptyPlateController : ItemController
 {
     public Collider2D unlockCollider;
     private bool justUsed = false;
 
-    public StorageKeyController(PlayerController playerController) : base(playerController) { }
+    public EmptyPlateController(PlayerController playerController) : base(playerController) { }
 
     private void Update()
     {
@@ -25,9 +25,8 @@ public class StorageKeyController : ItemController
 
         if (currentCooldown <= 0)
         {
-            Debug.Log("Using the storagekey!");
+            Debug.Log("Using the empty plate on the food!");
 
-            // Open Door to storage
             justUsed = true;
             unlockCollider.isTrigger = false;
             unlockCollider.enabled = true;

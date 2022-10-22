@@ -115,3 +115,4 @@ MonoBehaviour:
   baseItem: {fileID: 11400000, guid: 73e90ac54d6df4d44ae50d52692dea6d, type: 2}
   cooldown: 1
   spriteRenderer: {fileID: 5612021851744229646}
+  unlockCollider: {fileID: 5612021851744229647}

@@ -103,7 +103,9 @@ public class PlayerUI : MonoBehaviour
         // Delete Item UIs if there are too many (an item was used)
         for (int i = itemUIs.Count - 1; i > playerController.inventory.Count - 1; i--)
         {
-            Destroy(itemUIs[i].gameObject);
+            ItemUI itemUIToDestroy = itemUIs[i];
+            itemUIs.RemoveAt(i);
+            Destroy(itemUIToDestroy.gameObject);
         }
 
     }

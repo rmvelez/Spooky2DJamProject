@@ -153,8 +153,8 @@ public class PlayerController : MonoBehaviour, IDamagable
             }
 
             // Equip next / previous item
-            if (scrollDelta < 0 && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
-            if (scrollDelta > 0 && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
+            if (scrollDelta > 0 && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
+            if (scrollDelta < 0 && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
 
         }
 
@@ -197,6 +197,23 @@ public class PlayerController : MonoBehaviour, IDamagable
         if(nrOfLives <= 0)
         {
             ChangePlayerState(new PlayerStateDying(this));
+        }
+    }
+
+
+    /// <summary>
+    /// Removes an item from the player's inventory and updates the UI
+    /// Equips the next item
+    /// </summary>
+    /// <param name="baseItem"></param>
+    public void RemoveItemFromInventory(BaseItem baseItem)
+    {
+        if (inventory.Contains(baseItem))
+        {
+            int index = inventory.IndexOf(baseItem);
+            inventory.Remove(baseItem);
+            Equip(inventory.Count - 1 >= index ? inventory[index] : inventory[index - 1]);
+            PlayerUI.GetInstance().UpdateInventory();
         }
     }
 }

@@ -6,6 +6,9 @@ public abstract class GhostState
 {
     protected GhostController ghostController;
 
+    public float totalStateTime = 0;
+    public float currentStateTime = 0;
+
     public float moveSpeed;
     public bool useFading;
 
