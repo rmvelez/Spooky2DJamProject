@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float dashSpeed;
     public float dashDuration;
+    public float equippedItemDistance;
     public ItemController equippedItem;
     
 
@@ -64,6 +65,7 @@ public class PlayerController : MonoBehaviour
         if (playerState != null && playerState.allowDashing) Dash();
 
         ChangeItem();
+        Aim();
         
     }
 
@@ -155,5 +157,27 @@ public class PlayerController : MonoBehaviour
 
         }
 
+    }
+
+
+    /// <summary>
+    /// Set the position and rotation of the equipped item according to where the player is aiming
+    /// </summary>
+    private void Aim()
+    {
+        if (equippedItem == null) return;
+
+        Vector2 joystickInput = new Vector2(Input.GetAxis("Horizontal2"), Input.GetAxis("Vertical2") * (-1));
+
+        // Get Input ( prefer Controller over Mouse)
+        Vector2 mouseAim = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseAim = mouseAim - new Vector2(transform.position.x, transform.position.y);
+        Vector2 aimVector = joystickInput.magnitude > 0.3f ? joystickInput : mouseAim;
+
+        equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * equippedItemDistance;
+
+        float angle = Vector2.Angle(Vector2.up, aimVector);
+        Debug.Log($"Angle: {angle}");
+        equippedItem.transform.rotation = Quaternion.Euler(0, 0, (aimVector.x > 0 ? 360 - angle : angle));
     }
 }

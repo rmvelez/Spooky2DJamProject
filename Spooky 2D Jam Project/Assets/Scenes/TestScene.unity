@@ -681,7 +681,7 @@ GameObject:
   - component: {fileID: 1778341142}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -702,6 +702,7 @@ MonoBehaviour:
   moveSpeed: 8
   dashSpeed: 24
   dashDuration: 0.2
+  equippedItemDistance: 2
   equippedItem: {fileID: 0}
   inventory: []
   itemPivot: {fileID: 828371584}
