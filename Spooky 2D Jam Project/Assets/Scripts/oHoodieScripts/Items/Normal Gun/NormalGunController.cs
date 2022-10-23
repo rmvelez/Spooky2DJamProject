@@ -20,6 +20,8 @@ public class NormalGunController : ItemController
             BulletController bulletController = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.Euler(0,0,0));
             bulletController.Shoot(PlayerController.aimVector);
             currentCooldown = cooldown;
+
+            SoundBank.PlayAudioClip(SoundBank.GetInstance().gunshotAudioClips, audioSource);
         }
         
 

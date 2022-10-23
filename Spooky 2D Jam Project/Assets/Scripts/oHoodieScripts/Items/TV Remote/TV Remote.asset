@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TV Remote
   m_EditorClassIdentifier: 
   name: TV Remote
-  ingameIcon: {fileID: 21300000, guid: 1b7989fca3f4f8342a7042cba4383432, type: 3}
-  inventoryIcon: {fileID: 21300000, guid: c05ad61728b8a1648a47943d947655dd, type: 3}
+  ingameIcon: {fileID: -550884381841866040, guid: 7a3c34d304304bc48b2bf55e5c3d401d, type: 3}
+  inventoryIcon: {fileID: -550884381841866040, guid: 7a3c34d304304bc48b2bf55e5c3d401d, type: 3}
   prefab: {fileID: 2316353329267091835, guid: fd721bef81a85234db85a95e72790205, type: 3}

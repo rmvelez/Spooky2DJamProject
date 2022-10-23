@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
@@ -31,7 +32,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     // References
     public List<BaseItem> inventory;
     public GameObject itemPivot;
-
+    public AudioSource itemAudioSource;
 
     // Internal State
     private PlayerState playerState;
@@ -40,15 +41,22 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public  Animator animator;
+    [HideInInspector] public AudioSource audioSource;
     [HideInInspector] public Vector2 aimVector;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerState = new PlayerStateIdle(this);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+
+
         nrOfLives = startingNrOfLives;
+
+        ChangePlayerState(new PlayerStateIdle(this));
+
+
         if (inventory.Count > 0) Equip(inventory[0]);
 
         PlayerUI.GetInstance().UpdateInventory();
@@ -92,6 +100,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (inventory.Count == 1) Equip(baseItem);
 
         PlayerUI.GetInstance().UpdateInventory();
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().newItemAudioClips, itemAudioSource);
+
     }
 
 
@@ -111,6 +121,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         equippedItem = Instantiate(baseItem.prefab, itemPivot.transform).GetComponent<ItemController>();
         equippedItem.Equip();
         PlayerUI.GetInstance().UpdateInventory();
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().itemSwitchAudioClips, itemAudioSource);
+
     }
 
 
@@ -153,8 +165,8 @@ public class PlayerController : MonoBehaviour, IDamagable
             }
 
             // Equip next / previous item
-            if (scrollDelta < 0 && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
-            if (scrollDelta > 0 && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
+            if (scrollDelta > 0 && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
+            if (scrollDelta < 0 && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
 
         }
 
@@ -178,7 +190,19 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         if (equippedItem == null) return;
 
-        equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * equippedItemDistance;
+        // Little anim, recoil when use item
+        float modifiedEquppedItemDistance = equippedItemDistance;
+        if (equippedItem.currentCooldown > equippedItem.cooldown / 2)
+        {
+            modifiedEquppedItemDistance *= (equippedItem.currentCooldown / equippedItem.cooldown);
+        }
+        else
+        {
+            modifiedEquppedItemDistance *= 1 - (equippedItem.currentCooldown / equippedItem.cooldown);
+
+        }
+
+        equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * modifiedEquppedItemDistance;
         float angle = Vector2.Angle(Vector2.up, aimVector);
         equippedItem.transform.rotation = Quaternion.Euler(0, 0, (aimVector.x > 0 ? 360 - angle : angle));
     }
@@ -194,9 +218,48 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (nrOfLives < 0) nrOfLives = 0;
         PlayerUI.GetInstance().UpdateLives();
 
-        if(nrOfLives <= 0)
+        if(amount > 0) SoundBank.PlayAudioClip(SoundBank.GetInstance().PlayerHurtAudioClips, audioSource);
+
+
+        if (nrOfLives <= 0)
         {
             ChangePlayerState(new PlayerStateDying(this));
         }
+
+    }
+
+
+    /// <summary>
+    /// Removes an item from the player's inventory and updates the UI
+    /// Equips the next item
+    /// </summary>
+    /// <param name="baseItem"></param>
+    public void RemoveItemFromInventory(BaseItem baseItem)
+    {
+        if (inventory.Contains(baseItem))
+        {
+            int index = inventory.IndexOf(baseItem);
+            inventory.Remove(baseItem);
+            Equip(inventory.Count - 1 >= index ? inventory[index] : inventory[index - 1]);
+            PlayerUI.GetInstance().UpdateInventory();
+        }
+    }
+
+
+    /// <summary>
+    /// Called from the animator
+    /// </summary>
+    public void PlayFootstepSound()
+    {
+        //SoundBank.PlayAudioClip(SoundBank.GetInstance().indoorFootstepAudioClips, audioSource);
+    }
+
+
+    /// <summary>
+    /// Called from the animator event
+    /// </summary>
+    public void ProceedToLoseScene()
+    {
+        SceneManager.LoadScene("LoseScene");
     }
 }

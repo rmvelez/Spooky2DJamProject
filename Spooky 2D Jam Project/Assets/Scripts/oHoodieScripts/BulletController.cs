@@ -35,12 +35,40 @@ public class BulletController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        moveVector = Vector2.zero;
-        animator.SetTrigger("Hit");
-        collider.enabled = false;
-        IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
+        // Enemy Bullet hitting the player
+        if (collision.gameObject.tag == "Player" && (CanHurtPlayer))
+        {
+            IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
+            if (damagable != null) damagable.TakeDamage(damage);
 
-        if (damagable != null) damagable.TakeDamage(damage);
+            Destroy(this.gameObject);
+        }
+        // Player bullet hitting the enemy
+        else if (collision.gameObject.tag == "Enemy" && CanHurtEnemy)
+        {
+            moveVector = Vector2.zero;
+            animator.SetTrigger("Hit");
+            collider.enabled = false;
+
+            IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
+            if (damagable != null) damagable.TakeDamage(damage);
+        }
+        // any bullet hitting a wall
+        else if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "Enemy")
+        {
+            if (CanHurtEnemy)
+            {
+                moveVector = Vector2.zero;
+                animator.SetTrigger("Hit");
+                collider.enabled = false;
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
+        }
+
+
     }
 
     public void Destroy()

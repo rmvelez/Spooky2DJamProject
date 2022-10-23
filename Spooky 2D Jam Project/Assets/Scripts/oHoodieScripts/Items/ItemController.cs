@@ -5,6 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(AudioSource))]
 
 public abstract class ItemController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public abstract class ItemController : MonoBehaviour
     
     public SpriteRenderer spriteRenderer;
 
+    protected AudioSource audioSource;
 
     private PlayerController playerController;
     protected PlayerController PlayerController
@@ -24,7 +26,7 @@ public abstract class ItemController : MonoBehaviour
         }
     }
 
-    protected float currentCooldown;
+    public float currentCooldown;
 
     public ItemController(PlayerController playerController)
     {
@@ -34,12 +36,17 @@ public abstract class ItemController : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         if (baseItem != null && !IsEquipped()) spriteRenderer.sprite = baseItem.inventoryIcon;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         currentCooldown -= Time.deltaTime;
+        if (currentCooldown < 0)
+        {
+            currentCooldown = 0;
+        }
     }
 
     /// <summary>
