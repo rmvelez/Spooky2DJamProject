@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class GhostController : MonoBehaviour, IDamagable
 {
     [SerializeField] private float startingNrOfLives;
-    [SerializeField] private ItemController lootPrefab;
+    [SerializeField] private ItemController lootGameObjectToActivate;
     public float distanceToSpawn;
     public float alphaWhenVisible;
     public float fadeTime;
@@ -23,6 +24,7 @@ public class GhostController : MonoBehaviour, IDamagable
     [HideInInspector] public bool hasWalkedBefore = false;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
+    [HideInInspector] public Light2D light2D;
     [HideInInspector] public PlayerController playerController;
     
     public new Collider2D collider;
@@ -40,6 +42,7 @@ public class GhostController : MonoBehaviour, IDamagable
         playerController = PlayerController.GetInstance();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        light2D = GetComponent<Light2D>();
         nrOfLives = startingNrOfLives;
         ChangeGhostState(new GhostStateHidden(this));
         stateStartPos = transform.position;
@@ -136,6 +139,7 @@ public class GhostController : MonoBehaviour, IDamagable
     /// </summary>
     public void FinishedDying()
     {
+        lootGameObjectToActivate.gameObject.SetActive(true);
         Destroy(this.gameObject);
     }
 

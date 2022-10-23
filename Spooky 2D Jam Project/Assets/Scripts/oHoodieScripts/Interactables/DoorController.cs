@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
-public class StorageDoorController : InteractableController
+public class DoorController : InteractableController
 {
     [SerializeField] private Collider2D doorCollider;
+    [SerializeField] private ShadowCaster2D shadowCaster;
 
     [SerializeField] 
     public override void Interact(ItemController usedItem)
@@ -15,6 +17,7 @@ public class StorageDoorController : InteractableController
         SoundBank.PlayAudioClip(SoundBank.GetInstance().DoorUnlockAudioClips, audioSource);
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<Collider2D>().enabled = false;
+        shadowCaster.enabled = false;
         doorCollider.enabled = false;
     }
 }

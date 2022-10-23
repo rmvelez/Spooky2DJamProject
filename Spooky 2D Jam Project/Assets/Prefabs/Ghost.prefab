@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 5091595378572643090}
   - component: {fileID: 8557531253240091246}
   - component: {fileID: 4566740216356464328}
+  - component: {fileID: 1838489016348440499}
   m_Layer: 13
   m_Name: Ghost
   m_TagString: Untagged
@@ -111,12 +112,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingNrOfLives: 30
-  lootPrefab: {fileID: 0}
+  lootGameObjectToActivate: {fileID: 0}
   distanceToSpawn: 5
   alphaWhenVisible: 0.8
   fadeTime: 0.25
   appearDistance: 7
-  damage: 1
+  damage: 0.5
   minAttackTime: 1.5
   maxAttackTime: 1.8
   minWalkTime: 1
@@ -125,6 +126,7 @@ MonoBehaviour:
   hasWalkedBefore: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
+  light2D: {fileID: 0}
   playerController: {fileID: 0}
   collider: {fileID: 5091595378572643090}
   spriteRenderer: {fileID: 6813341344790583028}
@@ -170,7 +172,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 30000
-  m_Sprite: {fileID: 3507483189343021040, guid: dc2133148e92c6e4cb0041896fd01c18, type: 3}
+  m_Sprite: {fileID: -5369496787714162738, guid: db741d3f222276b4999e006990f34b60, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -213,7 +215,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.41}
+  m_Offset: {x: 0, y: 0.06}
   m_Size: {x: 0.79, y: 1.86}
   m_Direction: 0
 --- !u!50 &8557531253240091246
@@ -333,3 +335,44 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1838489016348440499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6599556649429300076}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightType: 3
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 0.8788698, g: 0.4575472, b: 1, a: 1}
+  m_Intensity: 0.4
+  m_LightVolumeOpacity: 0
+  m_ApplyToSortingLayers: 00000000
+  m_LightCookieSprite: {fileID: 0}
+  m_UseNormalMap: 0
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_ShadowIntensity: 1
+  m_ShadowVolumeIntensity: 0
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 1
+  m_PointLightOuterRadius: 2
+  m_PointLightDistance: 3
+  m_PointLightQuality: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
