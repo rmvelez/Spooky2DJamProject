@@ -128,7 +128,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void UseItem()
     {
-        if(equippedItem != null && Input.GetMouseButton(0))
+        Vector2 joystickRight = new Vector2(Input.GetAxis("Horizontal2"), Input.GetAxis("Vertical2"));
+        if(equippedItem != null && (Input.GetMouseButton(0) || joystickRight.magnitude > 0.9f))
         {
             equippedItem.Use();
         }
@@ -138,7 +139,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void Dash()
     {
         if (currentDashCooldown > 0) return;
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Space)) ChangePlayerState(new PlayerStateDashing(this));
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5)) ChangePlayerState(new PlayerStateDashing(this));
     }
 
     /// <summary>
@@ -151,7 +152,11 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         float scrollDelta = Input.mouseScrollDelta.y;
 
-        if (scrollDelta != 0)
+        float leftTrigger = Input.GetAxis("L2") + Input.GetAxis("L1");
+        float rightTrigger = Input.GetAxis("R2") + Input.GetAxis("R1");
+        float joystickDelta = leftTrigger - rightTrigger;
+
+        if (scrollDelta != 0 || joystickDelta != 0)
         {
             // Determine currently equipped item
             int currentItemIndex = 0;
@@ -165,8 +170,8 @@ public class PlayerController : MonoBehaviour, IDamagable
             }
 
             // Equip next / previous item
-            if (scrollDelta > 0 && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
-            if (scrollDelta < 0 && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
+            if ((scrollDelta > 0 || joystickDelta > 0) && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
+            if ((scrollDelta < 0 || joystickDelta < 0) && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
 
         }
 
