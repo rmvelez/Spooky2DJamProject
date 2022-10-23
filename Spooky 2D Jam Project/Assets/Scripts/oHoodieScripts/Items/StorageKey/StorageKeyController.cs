@@ -33,6 +33,9 @@ public class StorageKeyController : ItemController
             unlockCollider.enabled = true;
 
             currentCooldown = cooldown;
+
+            SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonAttackAudioClips, audioSource);
+
         }
     }
 }

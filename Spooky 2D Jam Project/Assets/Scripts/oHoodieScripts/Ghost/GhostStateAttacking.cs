@@ -24,6 +24,8 @@ public class GhostStateAttacking : GhostState
         ghostController.animator.SetTrigger("Attack");
         ghostController.damageTriggerCollider.enabled = true;
 
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostAttackAudioClips, ghostController.audioSource);
+
     }
 
     public override void OnStateExit()

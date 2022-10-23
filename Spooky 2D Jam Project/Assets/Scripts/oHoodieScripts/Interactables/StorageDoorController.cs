@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StorageDoorController : InteractableController
 {
-    Collider2D doorCollider;
+    [SerializeField] private Collider2D doorCollider;
 
     [SerializeField] 
     public override void Interact(ItemController usedItem)
@@ -12,6 +12,9 @@ public class StorageDoorController : InteractableController
         Debug.Log($"Opened Storage Door with Key!");
         PlayerController.GetInstance().RemoveItemFromInventory(usedItem.baseItem);
 
-        Destroy(this.gameObject);
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().DoorUnlockAudioClips, audioSource);
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        doorCollider.enabled = false;
     }
 }

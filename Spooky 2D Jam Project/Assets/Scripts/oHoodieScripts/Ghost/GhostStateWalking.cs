@@ -22,6 +22,8 @@ public class GhostStateWalking : GhostState
         if(ghostController.hasWalkedBefore) ghostController.transform.position = GetWalkingStartPosition();
         ghostController.targetPosition = GetNewTargetPosition();
 
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostSpawnAudioClips, ghostController.audioSource);
+
     }
 
     public override void OnStateExit()

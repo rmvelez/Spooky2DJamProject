@@ -10,6 +10,7 @@ public class GhostStateSpawning : GhostState
     {
         moveSpeed = 0;
         useFading = false;
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostSpawnAudioClips, ghostController.audioSource);
     }
 
     public override void OnStateExit()

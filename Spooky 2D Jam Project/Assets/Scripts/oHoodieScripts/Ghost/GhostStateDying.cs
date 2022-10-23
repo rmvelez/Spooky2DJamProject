@@ -10,6 +10,8 @@ public class GhostStateDying : GhostState
     {
         moveSpeed = 0;
         useFading = false;
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostDieAudioClips, ghostController.audioSource);
+
     }
 
     public override void OnStateExit()

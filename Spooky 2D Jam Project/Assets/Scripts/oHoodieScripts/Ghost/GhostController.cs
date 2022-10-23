@@ -27,6 +27,8 @@ public class GhostController : MonoBehaviour, IDamagable
     
     public new Collider2D collider;
     public  SpriteRenderer spriteRenderer;
+    public AudioSource audioSource;
+
 
     private GhostState ghostState;
     [HideInInspector] public Vector3 targetPosition;
