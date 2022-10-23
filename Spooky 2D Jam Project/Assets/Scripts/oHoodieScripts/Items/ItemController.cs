@@ -26,7 +26,7 @@ public abstract class ItemController : MonoBehaviour
         }
     }
 
-    protected float currentCooldown;
+    public float currentCooldown;
 
     public ItemController(PlayerController playerController)
     {
@@ -40,9 +40,13 @@ public abstract class ItemController : MonoBehaviour
         if (baseItem != null && !IsEquipped()) spriteRenderer.sprite = baseItem.inventoryIcon;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         currentCooldown -= Time.deltaTime;
+        if (currentCooldown < 0)
+        {
+            currentCooldown = 0;
+        }
     }
 
     /// <summary>

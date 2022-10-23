@@ -29,6 +29,7 @@ public class SkeletonStateTeleIn : SkeletonState
         skeletonController.transform.position = targetPos;
 
         skeletonController.animator.SetTrigger("TeleIn");
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonSpawnAudioClips, skeletonController.audioSource);
 
     }
 

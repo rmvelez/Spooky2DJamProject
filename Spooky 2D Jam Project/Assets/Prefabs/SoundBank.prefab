@@ -73,9 +73,7 @@ MonoBehaviour:
   gunshotAudioClips:
   - {fileID: 8300000, guid: fc755cb0f5fc42948bfcbad6eb4ec838, type: 3}
   newItemAudioClips:
-  - {fileID: 8300000, guid: aac1ed0138d0ba74fa53ea126a7efe19, type: 3}
-  - {fileID: 8300000, guid: 46051398709aecd43b6c58ba8849182c, type: 3}
-  - {fileID: 8300000, guid: fe4508f021859594c92e6738e989e246, type: 3}
+  - {fileID: 8300000, guid: 2317da4125d50ca42a880300e897c371, type: 3}
   itemSwitchAudioClips:
   - {fileID: 8300000, guid: a2a59ee19b3255b4892ba4ea65ec783f, type: 3}
   playerDeathAudioClips:

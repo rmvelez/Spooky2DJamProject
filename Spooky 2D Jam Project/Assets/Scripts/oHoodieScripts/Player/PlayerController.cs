@@ -190,7 +190,19 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         if (equippedItem == null) return;
 
-        equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * equippedItemDistance;
+        // Little anim, recoil when use item
+        float modifiedEquppedItemDistance = equippedItemDistance;
+        if (equippedItem.currentCooldown > equippedItem.cooldown / 2)
+        {
+            modifiedEquppedItemDistance *= (equippedItem.currentCooldown / equippedItem.cooldown);
+        }
+        else
+        {
+            modifiedEquppedItemDistance *= 1 - (equippedItem.currentCooldown / equippedItem.cooldown);
+
+        }
+
+        equippedItem.transform.position = transform.position + new Vector3(aimVector.x, aimVector.y, 0).normalized * modifiedEquppedItemDistance;
         float angle = Vector2.Angle(Vector2.up, aimVector);
         equippedItem.transform.rotation = Quaternion.Euler(0, 0, (aimVector.x > 0 ? 360 - angle : angle));
     }

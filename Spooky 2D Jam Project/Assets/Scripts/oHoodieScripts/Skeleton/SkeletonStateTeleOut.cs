@@ -10,6 +10,7 @@ public class SkeletonStateTeleOut : SkeletonState
     public override void OnStateEnter()
     {
         skeletonController.animator.SetTrigger("TeleOut");
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonSpawnAudioClips, skeletonController.audioSource);
 
     }
 

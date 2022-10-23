@@ -10,8 +10,9 @@ public class SkeletonStateSpawning : SkeletonState
     {
         skeletonController.collider.enabled = true;
         skeletonController.animator.SetTrigger("Spawn");
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonSpawnAudioClips, skeletonController.audioSource);
 
-
+        MusicController.GetInstance().AddEnemy();
     }
 
     public override void OnStateExit()

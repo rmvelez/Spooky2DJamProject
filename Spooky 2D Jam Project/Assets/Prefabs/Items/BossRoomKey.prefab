@@ -114,8 +114,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseItem: {fileID: 11400000, guid: 283f3104e58a36b47b7787631b50497d, type: 2}
-  cooldown: 1
+  cooldown: 0.4
   spriteRenderer: {fileID: 4194496754225099457}
+  currentCooldown: 0
   unlockCollider: {fileID: 2416260932602320272}
 --- !u!82 &2229204368238742313
 AudioSource:

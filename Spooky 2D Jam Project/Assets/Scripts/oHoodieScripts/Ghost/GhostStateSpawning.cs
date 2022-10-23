@@ -12,6 +12,8 @@ public class GhostStateSpawning : GhostState
         useFading = false;
         SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostSpawnAudioClips, ghostController.audioSource);
         ghostController.light2D.enabled = true;
+        MusicController.GetInstance().AddEnemy();
+
     }
 
     public override void OnStateExit()

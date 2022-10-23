@@ -7,6 +7,7 @@ public class DoorController : InteractableController
 {
     [SerializeField] private Collider2D doorCollider;
     [SerializeField] private ShadowCaster2D shadowCaster;
+    [SerializeField] private GameObject lockIcon;
 
     [SerializeField] 
     public override void Interact(ItemController usedItem)
@@ -19,5 +20,6 @@ public class DoorController : InteractableController
         GetComponent<Collider2D>().enabled = false;
         shadowCaster.enabled = false;
         doorCollider.enabled = false;
+        if(lockIcon != null) lockIcon.SetActive(false);
     }
 }

@@ -139,7 +139,9 @@ public class GhostController : MonoBehaviour, IDamagable
     /// </summary>
     public void FinishedDying()
     {
-        if(lootGameObjectToActivate.gameObject != null) lootGameObjectToActivate.gameObject.SetActive(true);
+        MusicController.GetInstance().RemoveEnemy();
+
+        if (lootGameObjectToActivate.gameObject != null) lootGameObjectToActivate.gameObject.SetActive(true);
         Destroy(this.gameObject);
     }
 

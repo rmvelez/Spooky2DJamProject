@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SkeletonController : MonoBehaviour, IDamagable
 {
     [SerializeField] private BulletController boneBulletPrefab;
     [SerializeField] private float startingNrOfLives;
+    [SerializeField] private bool isBoss = false;
+
     [SerializeField] private GameObject lootGameObjectToActivate;
     public float distanceToSpawn;
     public float damage;
@@ -86,7 +89,13 @@ public class SkeletonController : MonoBehaviour, IDamagable
     /// </summary>
     public void FinishedDying()
     {
-        if(lootGameObjectToActivate != null) lootGameObjectToActivate.gameObject.SetActive(true);
+        MusicController.GetInstance().RemoveEnemy();
+        if (lootGameObjectToActivate != null) lootGameObjectToActivate.gameObject.SetActive(true);
+
+        if (isBoss)
+        {
+            SceneManager.LoadScene("WinScene");
+        }
         Destroy(this.gameObject);
     }
 
@@ -127,6 +136,8 @@ public class SkeletonController : MonoBehaviour, IDamagable
         Debug.Log("Bone thrown");
         BulletController bulletController = Instantiate(boneBulletPrefab, transform.position, transform.rotation);
         bulletController.Shoot(playerController.transform.position - transform.position);
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonAttackAudioClips, audioSource);
+
     }
 
 }

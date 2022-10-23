@@ -9,6 +9,7 @@ public class SkeletonStateDying : SkeletonState
     public override void OnStateEnter()
     {
         skeletonController.animator.SetTrigger("Die");
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonDieAudioClips, skeletonController.audioSource);
 
 
     }
