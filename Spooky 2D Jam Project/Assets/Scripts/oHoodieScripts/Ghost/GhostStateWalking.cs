@@ -5,9 +5,6 @@ using UnityEngine;
 public class GhostStateWalking : GhostState
 {
 
-    private bool isPausing = false;
-    private float pauseTime;
-
     public GhostStateWalking(GhostController ghostController) : base(ghostController) { }
 
     public override void OnStateEnter()
@@ -15,7 +12,6 @@ public class GhostStateWalking : GhostState
         totalStateTime = Random.Range(ghostController.minWalkTime, ghostController.maxWalkTime);
         currentStateTime = 0;
 
-        pauseTime = Random.Range(1f, 2f);
         useFading = true;
         ghostController.animator.SetTrigger("Walk");
 

@@ -5,9 +5,6 @@ using UnityEngine;
 public class GhostStateAttacking : GhostState
 {
 
-    private bool isPausing = false;
-    private float pauseTime;
-
     public GhostStateAttacking(GhostController ghostController) : base(ghostController) { }
 
     public override void OnStateEnter()
@@ -15,7 +12,6 @@ public class GhostStateAttacking : GhostState
         totalStateTime = Random.Range(ghostController.minAttackTime, ghostController.maxAttackTime);
         currentStateTime = 0;
 
-        pauseTime = Random.Range(1f, 2f);
         useFading = true;
 
         ghostController.transform.position = GetAttackStartPosition();

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TVController : InteractableController
 {
+    [SerializeField] private GameObject lightObjectToActivate;
+    [SerializeField] private Animator animator;
     [SerializeField] private List<GhostController> disabledGhosts;
 
     private bool ghostsHaveSpawned = false;
@@ -18,6 +20,8 @@ public class TVController : InteractableController
         }
         SoundBank.PlayAudioClip(SoundBank.GetInstance().TVTunOnAudioClips, audioSource);
         ghostsHaveSpawned = true;
+        lightObjectToActivate.SetActive(true);
+        animator.SetTrigger("turnOn");
     }
 
 }
