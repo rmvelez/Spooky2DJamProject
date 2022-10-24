@@ -20,6 +20,8 @@ public class PlayerStateDashing : PlayerState
 
         dashVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * playerController.dashSpeed;
         dashTimeLeft = playerController.dashDuration;
+
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().dashAudioClips, playerController.audioSource);
     }
 
     public override void OnStateExit()

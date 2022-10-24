@@ -37,6 +37,7 @@ public class SoundBank : MonoBehaviour
     public List<AudioClip> DoorUnlockAudioClips;
     public List<AudioClip> TVTunOnAudioClips;
 
+    public List<AudioClip> dashAudioClips;
 
     public List<AudioClip> WinAudioClips;
     public List<AudioClip> LoseAudioClips;
