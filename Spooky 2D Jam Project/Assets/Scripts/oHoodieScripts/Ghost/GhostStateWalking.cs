@@ -12,11 +12,14 @@ public class GhostStateWalking : GhostState
         totalStateTime = Random.Range(ghostController.minWalkTime, ghostController.maxWalkTime);
         currentStateTime = 0;
 
-        useFading = true;
-        ghostController.animator.SetTrigger("Walk");
+        if (ghostController.hasWalkedBefore)
+        {
+            useFading = true;
+            ghostController.transform.position = GetWalkingStartPosition();
+        }
 
-        if(ghostController.hasWalkedBefore) ghostController.transform.position = GetWalkingStartPosition();
         ghostController.targetPosition = GetNewTargetPosition();
+        ghostController.animator.SetTrigger("Walk");
 
         SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostSpawnAudioClips, ghostController.audioSource);
 

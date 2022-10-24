@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         inventory.Add(baseItem);
         if (inventory.Count == 1) Equip(baseItem);
+        Debug.Log($"Picked up {baseItem.name}");
 
         PlayerUI.GetInstance().UpdateInventory();
         SoundBank.PlayAudioClip(SoundBank.GetInstance().newItemAudioClips, itemAudioSource);
@@ -246,6 +247,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         if (inventory.Contains(baseItem))
         {
+            if (equippedItem.baseItem == baseItem) equippedItem.enabled = false; // prevent insta pick up again
+
             int index = inventory.IndexOf(baseItem);
             inventory.Remove(baseItem);
             Equip(inventory.Count - 1 >= index ? inventory[index] : inventory[index - 1]);

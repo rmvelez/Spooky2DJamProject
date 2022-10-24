@@ -13,6 +13,7 @@ public class GhostStateSpawning : GhostState
         SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostSpawnAudioClips, ghostController.audioSource);
         ghostController.light2D.enabled = true;
         MusicController.GetInstance().AddEnemy();
+        ghostController.animator.SetTrigger("Spawn");
 
     }
 
@@ -26,6 +27,5 @@ public class GhostStateSpawning : GhostState
 
     public override void OnStateUpdate()
     {
-        ghostController.animator.SetTrigger("Spawn");
     }
 }

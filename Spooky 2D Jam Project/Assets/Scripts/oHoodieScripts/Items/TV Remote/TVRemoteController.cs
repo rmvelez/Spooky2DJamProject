@@ -13,6 +13,8 @@ public class TVRemoteController : ItemController
 
     private void Update()
     {
+        base.Update();
+
         if (currentCooldown <= 0.1f && justUsed)
         {
             unlockCollider.isTrigger = true;

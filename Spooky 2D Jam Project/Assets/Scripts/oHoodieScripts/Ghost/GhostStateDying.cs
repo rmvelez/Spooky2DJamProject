@@ -11,6 +11,7 @@ public class GhostStateDying : GhostState
         moveSpeed = 0;
         useFading = false;
         SoundBank.PlayAudioClip(SoundBank.GetInstance().ghostDieAudioClips, ghostController.audioSource);
+        ghostController.animator.SetTrigger("Die");
 
     }
 
@@ -24,7 +25,6 @@ public class GhostStateDying : GhostState
 
     public override void OnStateUpdate()
     {
-        ghostController.animator.SetTrigger("Die");
 
     }
 }

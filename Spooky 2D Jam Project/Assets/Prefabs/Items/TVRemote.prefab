@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseItem: {fileID: 11400000, guid: 2ac4827af1d632a4ca4b59d2fe0b32d8, type: 2}
-  cooldown: 1
+  cooldown: 0.4
   spriteRenderer: {fileID: 3951271497122961699}
   currentCooldown: 0
   unlockCollider: {fileID: 3951271497122961698}
