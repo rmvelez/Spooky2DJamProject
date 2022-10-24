@@ -50,7 +50,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
 
     public void ChangeSkeletonState(SkeletonState newSkeletonState)
     {
-        Debug.Log($"Change Skeleton State [{skeletonState} -> {newSkeletonState}]");
+        //Debug.Log($"Change Skeleton State [{skeletonState} -> {newSkeletonState}]");
 
         if (skeletonState != null) skeletonState.OnStateExit();
         skeletonState = newSkeletonState;
@@ -69,7 +69,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
 
     public void TakeDamage(float amount)
     {
-        Debug.Log("Skeleton takes dmg!!!");
+        //Debug.Log("Skeleton takes dmg!!!");
         nrOfLives -= amount;
 
         if (nrOfLives <= 0) ChangeSkeletonState(new SkeletonStateDying(this));
@@ -133,7 +133,6 @@ public class SkeletonController : MonoBehaviour, IDamagable
     /// </summary>
     public void ThrowBone()
     {
-        Debug.Log("Bone thrown");
         BulletController bulletController = Instantiate(boneBulletPrefab, transform.position, transform.rotation);
         bulletController.Shoot(playerController.transform.position - transform.position);
         SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonAttackAudioClips, audioSource);

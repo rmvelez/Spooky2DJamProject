@@ -105,7 +105,7 @@ public class GhostController : MonoBehaviour, IDamagable
 
     public void ChangeGhostState(GhostState newGhostState)
     {
-        Debug.Log($"Change Ghost State [{ghostState} -> {newGhostState}]");
+        //Debug.Log($"Change Ghost State [{ghostState} -> {newGhostState}]");
         stateStartPos = transform.position;
 
         if (ghostState != null) ghostState.OnStateExit();
@@ -118,7 +118,7 @@ public class GhostController : MonoBehaviour, IDamagable
 
     public void TakeDamage(float amount)
     {
-        Debug.Log("Ghost takes dmg!!!");
+        //Debug.Log("Ghost takes dmg!!!");
         nrOfLives -= amount;
 
         if (nrOfLives <= 0) ChangeGhostState(new GhostStateDying(this));

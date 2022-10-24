@@ -20,10 +20,12 @@ public class SkeletonStateTeleIn : SkeletonState
         do
         {
             randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-            hit = Physics2D.Raycast(targetPos, randomDirection, teleDist, 10); // 10 = Player layer
+            hit = Physics2D.Raycast(targetPos, randomDirection, teleDist, LayerMask.GetMask(new string[] { "Wall" })); // 12 = Wall layer - don't teleport into walls
             tries++;
 
             if (hit.collider == null) targetPos = targetPos + new Vector3(randomDirection.x, randomDirection.y, 0) * teleDist;
+            if (tries > 1) Debug.Log($"Skelly Telly Try {tries}");
+
         } while (hit.collider != null && tries < 10);
 
         skeletonController.transform.position = targetPos;
