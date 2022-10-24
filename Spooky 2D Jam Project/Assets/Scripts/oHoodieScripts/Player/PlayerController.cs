@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     [HideInInspector] public AudioSource audioSource;
     [HideInInspector] public Vector2 aimVector;
 
+    private float previousL2R2Delta = 0; // To prevent that L2/R2 immediately skip to first/last item, only allow skip onclick and not hold
+
     // Start is called before the first frame update
     void Start()
     {
@@ -148,15 +150,14 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void ChangeItem()
     {
 
-        // Scroll wheel to change item
-
+        // Scroll wheel or R2/L2 to change item
         float scrollDelta = Input.mouseScrollDelta.y;
 
-        float leftTrigger = Input.GetAxis("L2") + Input.GetAxis("L1");
-        float rightTrigger = Input.GetAxis("R2") + Input.GetAxis("R1");
+        float leftTrigger = Input.GetAxis("L2");
+        float rightTrigger = Input.GetAxis("R2");
         float joystickDelta = leftTrigger - rightTrigger;
 
-        if (scrollDelta != 0 || joystickDelta != 0)
+        if (scrollDelta != 0 || (joystickDelta != 0 && previousL2R2Delta == 0))
         {
             // Determine currently equipped item
             int currentItemIndex = 0;
@@ -170,10 +171,12 @@ public class PlayerController : MonoBehaviour, IDamagable
             }
 
             // Equip next / previous item
-            if ((scrollDelta > 0 || joystickDelta > 0) && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
-            if ((scrollDelta < 0 || joystickDelta < 0) && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
+            if ((scrollDelta > 0 || joystickDelta < 0) && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
+            if ((scrollDelta < 0 || joystickDelta > 0) && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
 
         }
+
+        previousL2R2Delta = joystickDelta;
 
     }
 
