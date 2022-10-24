@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3952017823997842578}
   - component: {fileID: 9185729257960136756}
   - component: {fileID: 7733473209984559579}
+  - component: {fileID: 6538776502610453323}
   m_Layer: 9
   m_Name: Skeleton
   m_TagString: Enemy
@@ -266,8 +267,23 @@ MonoBehaviour:
   maxTeleDistanceFromPlayer: 6
   rb: {fileID: 0}
   animator: {fileID: 0}
+  flashController: {fileID: 0}
   playerController: {fileID: 0}
   collider: {fileID: 482708785624600046}
   spriteRenderer: {fileID: 2204459012524806152}
   audioSource: {fileID: 9185729257960136756}
   targetPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &6538776502610453323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985036160594245008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2a17a99225faf64d96b8edbeafc1950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashTimeInSeconds: 0.05
+  flashMaterial: {fileID: 2100000, guid: fb0cb545e1189a54695cd34d13356f7f, type: 2}

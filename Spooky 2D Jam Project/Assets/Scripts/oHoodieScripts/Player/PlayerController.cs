@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     [HideInInspector] public  Animator animator;
     [HideInInspector] public AudioSource audioSource;
     [HideInInspector] public Vector2 aimVector;
+    private FlashController flashController;
+    private SpriteRenderer spriteRenderer;
 
     private float previousL2R2Delta = 0; // To prevent that L2/R2 immediately skip to first/last item, only allow skip onclick and not hold
 
@@ -52,7 +54,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-
+        flashController = GetComponent<FlashController>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         nrOfLives = startingNrOfLives;
 
@@ -227,8 +230,11 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (nrOfLives < 0) nrOfLives = 0;
         PlayerUI.GetInstance().UpdateLives();
 
-        if(amount > 0) SoundBank.PlayAudioClip(SoundBank.GetInstance().PlayerHurtAudioClips, audioSource);
-
+        if (amount > 0)
+        {
+            SoundBank.PlayAudioClip(SoundBank.GetInstance().PlayerHurtAudioClips, audioSource);
+            flashController.Flash(spriteRenderer);
+        }
 
         if (nrOfLives <= 0)
         {

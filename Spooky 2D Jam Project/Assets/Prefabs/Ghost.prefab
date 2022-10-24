@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 8557531253240091246}
   - component: {fileID: 4566740216356464328}
   - component: {fileID: 1838489016348440499}
+  - component: {fileID: 7438801933166157422}
   m_Layer: 13
   m_Name: Ghost
   m_TagString: Enemy
@@ -126,6 +127,7 @@ MonoBehaviour:
   hasWalkedBefore: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
+  flashController: {fileID: 0}
   light2D: {fileID: 0}
   playerController: {fileID: 0}
   collider: {fileID: 5091595378572643090}
@@ -376,3 +378,17 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &7438801933166157422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6599556649429300076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2a17a99225faf64d96b8edbeafc1950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashTimeInSeconds: 0.05
+  flashMaterial: {fileID: 2100000, guid: fb0cb545e1189a54695cd34d13356f7f, type: 2}

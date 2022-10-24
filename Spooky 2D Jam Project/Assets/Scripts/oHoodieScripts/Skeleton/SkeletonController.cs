@@ -25,6 +25,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
 
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
+    [HideInInspector] public FlashController flashController;
     [HideInInspector] public PlayerController playerController;
 
     public new Collider2D collider;
@@ -43,6 +44,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
         playerController = PlayerController.GetInstance();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        flashController = GetComponent<FlashController>();
         nrOfLives = startingNrOfLives;
         ChangeSkeletonState(new SkeletonStateHidden(this));
     }
@@ -71,7 +73,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
     {
         //Debug.Log("Skeleton takes dmg!!!");
         nrOfLives -= amount;
-
+        flashController.Flash(spriteRenderer);
         if (nrOfLives <= 0) ChangeSkeletonState(new SkeletonStateDying(this));
     }
 
