@@ -24,9 +24,9 @@ public class GhostStateHidden : GhostState
 
     public override void OnStateUpdate()
     {
-        if(Vector3.Distance(ghostController.transform.position, ghostController.playerController.transform.position) <= ghostController.distanceToSpawn)
-        {
-            ghostController.ChangeGhostState(new GhostStateSpawning(ghostController));
-        }
+        //if(Vector3.Distance(ghostController.transform.position, ghostController.playerController.transform.position) <= ghostController.distanceToSpawn)
+        //{
+        //    ghostController.ChangeGhostState(new GhostStateSpawning(ghostController));
+        //}
     }
 }

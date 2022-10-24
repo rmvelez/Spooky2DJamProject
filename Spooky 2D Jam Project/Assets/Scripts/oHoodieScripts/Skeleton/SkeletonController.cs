@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SkeletonController : MonoBehaviour, IDamagable
+public class SkeletonController : MonoBehaviour, IDamagable, ISpawnable
 {
     [SerializeField] private BulletController boneBulletPrefab;
     [SerializeField] private float startingNrOfLives;
@@ -141,4 +141,11 @@ public class SkeletonController : MonoBehaviour, IDamagable
 
     }
 
+    /// <summary>
+    /// Called by the EnemyGroupTrigger
+    /// </summary>
+    public void Spawn()
+    {
+        ChangeSkeletonState(new SkeletonStateSpawning(this));
+    }
 }

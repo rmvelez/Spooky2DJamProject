@@ -19,6 +19,7 @@ public class TVController : InteractableController
         foreach (GhostController ghost in disabledGhosts)
         {
             ghost.gameObject.SetActive(true);
+            ghost.Spawn();
         }
         SoundBank.PlayAudioClip(SoundBank.GetInstance().TVTunOnAudioClips, audioSource);
         ghostsHaveSpawned = true;

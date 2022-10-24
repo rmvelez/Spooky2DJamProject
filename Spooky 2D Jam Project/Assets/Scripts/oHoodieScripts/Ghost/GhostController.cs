@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-public class GhostController : MonoBehaviour, IDamagable
+public class GhostController : MonoBehaviour, IDamagable, ISpawnable
 {
     [SerializeField] private float startingNrOfLives;
     [SerializeField] private ItemController lootGameObjectToActivate;
@@ -147,5 +147,11 @@ public class GhostController : MonoBehaviour, IDamagable
         Destroy(this.gameObject);
     }
 
-
+    /// <summary>
+    /// Called by the EnemyGroupTrigger
+    /// </summary>
+    public void Spawn()
+    {
+        ChangeGhostState(new GhostStateSpawning(this));
+    }
 }

@@ -21,9 +21,9 @@ public class SkeletonStateHidden : SkeletonState
 
     public override void OnStateUpdate()
     {
-        if (Vector3.Distance(skeletonController.transform.position, skeletonController.playerController.transform.position) <= skeletonController.distanceToSpawn)
-        {
-            skeletonController.ChangeSkeletonState(new SkeletonStateSpawning(skeletonController));
-        }
+        //if (Vector3.Distance(skeletonController.transform.position, skeletonController.playerController.transform.position) <= skeletonController.distanceToSpawn)
+        //{
+        //    skeletonController.ChangeSkeletonState(new SkeletonStateSpawning(skeletonController));
+        //}
     }
 }
