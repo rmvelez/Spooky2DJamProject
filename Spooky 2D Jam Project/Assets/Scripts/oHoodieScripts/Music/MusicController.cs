@@ -25,6 +25,7 @@ public class MusicController : MonoBehaviour
     [SerializeField] private AudioSource interiorWarAudioSource;
     [SerializeField] private AudioSource exteriorPeaceAudioSource;
     [SerializeField] private AudioSource exteriorWarAudioSource;
+    [SerializeField] private AudioSource bossAudioSource;
 
     private float currentFadeTime;
     private AudioSource activeAudioSource;
@@ -40,6 +41,7 @@ public class MusicController : MonoBehaviour
         SetVolumeForAudioSource(interiorWarAudioSource);
         SetVolumeForAudioSource(exteriorPeaceAudioSource);
         SetVolumeForAudioSource(exteriorWarAudioSource);
+        SetVolumeForAudioSource(bossAudioSource);
     }
 
     public void AddEnemy()

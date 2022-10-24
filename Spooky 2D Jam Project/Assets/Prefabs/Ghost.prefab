@@ -111,15 +111,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60f4c757aaad5446aee63ab76dc8be2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingNrOfLives: 30
+  startingNrOfLives: 10
   lootGameObjectToActivate: {fileID: 0}
   distanceToSpawn: 5
   alphaWhenVisible: 0.8
   fadeTime: 0.25
   appearDistance: 7
   damage: 0.5
-  minAttackTime: 1.5
-  maxAttackTime: 1.8
+  minAttackTime: 1.8
+  maxAttackTime: 2
   minWalkTime: 1
   maxWalkTime: 2
   damageTriggerCollider: {fileID: 5333532877343469368}
