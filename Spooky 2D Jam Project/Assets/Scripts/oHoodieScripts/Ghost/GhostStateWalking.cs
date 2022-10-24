@@ -9,6 +9,7 @@ public class GhostStateWalking : GhostState
 
     public override void OnStateEnter()
     {
+        ghostController.damageTriggerCollider.enabled = false;
         totalStateTime = Random.Range(ghostController.minWalkTime, ghostController.maxWalkTime);
         currentStateTime = 0;
 
