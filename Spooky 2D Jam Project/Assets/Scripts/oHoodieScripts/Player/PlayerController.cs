@@ -43,6 +43,10 @@ public class PlayerController : MonoBehaviour, IDamagable
     [HideInInspector] public  Animator animator;
     [HideInInspector] public AudioSource audioSource;
     [HideInInspector] public Vector2 aimVector;
+    private FlashController flashController;
+    private SpriteRenderer spriteRenderer;
+
+    private float previousL2R2Delta = 0; // To prevent that L2/R2 immediately skip to first/last item, only allow skip onclick and not hold
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +54,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-
+        flashController = GetComponent<FlashController>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         nrOfLives = startingNrOfLives;
 
@@ -98,6 +103,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         inventory.Add(baseItem);
         if (inventory.Count == 1) Equip(baseItem);
+        Debug.Log($"Picked up {baseItem.name}");
 
         PlayerUI.GetInstance().UpdateInventory();
         SoundBank.PlayAudioClip(SoundBank.GetInstance().newItemAudioClips, itemAudioSource);
@@ -128,7 +134,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void UseItem()
     {
-        if(equippedItem != null && Input.GetMouseButton(0))
+        Vector2 joystickRight = new Vector2(Input.GetAxis("Horizontal2"), Input.GetAxis("Vertical2"));
+        if(equippedItem != null && (Input.GetMouseButton(0) || joystickRight.magnitude > 0.9f))
         {
             equippedItem.Use();
         }
@@ -138,7 +145,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void Dash()
     {
         if (currentDashCooldown > 0) return;
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Space)) ChangePlayerState(new PlayerStateDashing(this));
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5)) ChangePlayerState(new PlayerStateDashing(this));
     }
 
     /// <summary>
@@ -147,11 +154,14 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void ChangeItem()
     {
 
-        // Scroll wheel to change item
-
+        // Scroll wheel or R2/L2 to change item
         float scrollDelta = Input.mouseScrollDelta.y;
 
-        if (scrollDelta != 0)
+        float leftTrigger = Input.GetAxis("L2");
+        float rightTrigger = Input.GetAxis("R2");
+        float joystickDelta = leftTrigger - rightTrigger;
+
+        if (scrollDelta != 0 || (joystickDelta != 0 && previousL2R2Delta == 0))
         {
             // Determine currently equipped item
             int currentItemIndex = 0;
@@ -165,10 +175,12 @@ public class PlayerController : MonoBehaviour, IDamagable
             }
 
             // Equip next / previous item
-            if (scrollDelta > 0 && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
-            if (scrollDelta < 0 && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
+            if ((scrollDelta > 0 || joystickDelta < 0) && currentItemIndex > 0) Equip(inventory[currentItemIndex - 1]);
+            if ((scrollDelta < 0 || joystickDelta > 0) && currentItemIndex < inventory.Count - 1) Equip(inventory[currentItemIndex + 1]);
 
         }
+
+        previousL2R2Delta = joystickDelta;
 
     }
 
@@ -218,8 +230,11 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (nrOfLives < 0) nrOfLives = 0;
         PlayerUI.GetInstance().UpdateLives();
 
-        if(amount > 0) SoundBank.PlayAudioClip(SoundBank.GetInstance().PlayerHurtAudioClips, audioSource);
-
+        if (amount > 0)
+        {
+            SoundBank.PlayAudioClip(SoundBank.GetInstance().PlayerHurtAudioClips, audioSource);
+            flashController.Flash(spriteRenderer);
+        }
 
         if (nrOfLives <= 0)
         {
@@ -238,6 +253,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         if (inventory.Contains(baseItem))
         {
+            if (equippedItem.baseItem == baseItem) equippedItem.enabled = false; // prevent insta pick up again
+
             int index = inventory.IndexOf(baseItem);
             inventory.Remove(baseItem);
             Equip(inventory.Count - 1 >= index ? inventory[index] : inventory[index - 1]);

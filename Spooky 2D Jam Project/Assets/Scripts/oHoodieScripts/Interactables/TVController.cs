@@ -14,14 +14,18 @@ public class TVController : InteractableController
     {
         if (ghostsHaveSpawned) return;
 
+        PlayerController.GetInstance().RemoveItemFromInventory(itemController.baseItem);
+
         foreach (GhostController ghost in disabledGhosts)
         {
             ghost.gameObject.SetActive(true);
+            ghost.Spawn();
         }
         SoundBank.PlayAudioClip(SoundBank.GetInstance().TVTunOnAudioClips, audioSource);
         ghostsHaveSpawned = true;
         lightObjectToActivate.SetActive(true);
         animator.SetTrigger("turnOn");
+
     }
 
 }

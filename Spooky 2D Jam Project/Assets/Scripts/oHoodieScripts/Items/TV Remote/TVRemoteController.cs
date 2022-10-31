@@ -11,8 +11,10 @@ public class TVRemoteController : ItemController
     public TVRemoteController(PlayerController playerController) : base(playerController) { }
 
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (currentCooldown <= 0.1f && justUsed)
         {
             unlockCollider.isTrigger = true;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SkeletonController : MonoBehaviour, IDamagable
+public class SkeletonController : MonoBehaviour, IDamagable, ISpawnable
 {
     [SerializeField] private BulletController boneBulletPrefab;
     [SerializeField] private float startingNrOfLives;
@@ -25,6 +25,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
 
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
+    [HideInInspector] public FlashController flashController;
     [HideInInspector] public PlayerController playerController;
 
     public new Collider2D collider;
@@ -43,6 +44,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
         playerController = PlayerController.GetInstance();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        flashController = GetComponent<FlashController>();
         nrOfLives = startingNrOfLives;
         ChangeSkeletonState(new SkeletonStateHidden(this));
     }
@@ -50,7 +52,7 @@ public class SkeletonController : MonoBehaviour, IDamagable
 
     public void ChangeSkeletonState(SkeletonState newSkeletonState)
     {
-        Debug.Log($"Change Skeleton State [{skeletonState} -> {newSkeletonState}]");
+        //Debug.Log($"Change Skeleton State [{skeletonState} -> {newSkeletonState}]");
 
         if (skeletonState != null) skeletonState.OnStateExit();
         skeletonState = newSkeletonState;
@@ -69,9 +71,9 @@ public class SkeletonController : MonoBehaviour, IDamagable
 
     public void TakeDamage(float amount)
     {
-        Debug.Log("Skeleton takes dmg!!!");
+        //Debug.Log("Skeleton takes dmg!!!");
         nrOfLives -= amount;
-
+        flashController.Flash(spriteRenderer);
         if (nrOfLives <= 0) ChangeSkeletonState(new SkeletonStateDying(this));
     }
 
@@ -133,11 +135,17 @@ public class SkeletonController : MonoBehaviour, IDamagable
     /// </summary>
     public void ThrowBone()
     {
-        Debug.Log("Bone thrown");
         BulletController bulletController = Instantiate(boneBulletPrefab, transform.position, transform.rotation);
         bulletController.Shoot(playerController.transform.position - transform.position);
         SoundBank.PlayAudioClip(SoundBank.GetInstance().skeletonAttackAudioClips, audioSource);
 
     }
 
+    /// <summary>
+    /// Called by the EnemyGroupTrigger
+    /// </summary>
+    public void Spawn()
+    {
+        ChangeSkeletonState(new SkeletonStateSpawning(this));
+    }
 }

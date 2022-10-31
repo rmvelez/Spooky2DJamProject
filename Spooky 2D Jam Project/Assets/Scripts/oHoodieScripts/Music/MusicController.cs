@@ -25,9 +25,11 @@ public class MusicController : MonoBehaviour
     [SerializeField] private AudioSource interiorWarAudioSource;
     [SerializeField] private AudioSource exteriorPeaceAudioSource;
     [SerializeField] private AudioSource exteriorWarAudioSource;
+    [SerializeField] private AudioSource bossAudioSource;
 
     private float currentFadeTime;
     private AudioSource activeAudioSource;
+    private MusicTrigger activeMusicTrigger;
 
     private void Start()
     {
@@ -40,15 +42,18 @@ public class MusicController : MonoBehaviour
         SetVolumeForAudioSource(interiorWarAudioSource);
         SetVolumeForAudioSource(exteriorPeaceAudioSource);
         SetVolumeForAudioSource(exteriorWarAudioSource);
+        SetVolumeForAudioSource(bossAudioSource);
     }
 
     public void AddEnemy()
     {
         enemyCount++;
+        PlayMusicFromTrigger(activeMusicTrigger);
     }
     public void RemoveEnemy()
     {
         enemyCount--;
+        PlayMusicFromTrigger(activeMusicTrigger);
     }
 
     private void SetVolumeForAudioSource(AudioSource audioSource)
@@ -74,6 +79,8 @@ public class MusicController : MonoBehaviour
 
     public void PlayMusicFromTrigger(MusicTrigger musicTrigger)
     {
+        activeMusicTrigger = musicTrigger;
+
         if (enemyCount == 0)
         {
             activeAudioSource = musicTrigger.peaceAudioSource;

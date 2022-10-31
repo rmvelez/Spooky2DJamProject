@@ -15,6 +15,7 @@ public class PlayerStateDying : PlayerState
         allowDashing = false;
         allowItemUse = false;
         mirrorLeftRight = false;
+        SoundBank.PlayAudioClip(SoundBank.GetInstance().playerDeathAudioClips, playerController.audioSource);
     }
 
     public override void OnStateExit()

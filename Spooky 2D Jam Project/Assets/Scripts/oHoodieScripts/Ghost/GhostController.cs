@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-public class GhostController : MonoBehaviour, IDamagable
+public class GhostController : MonoBehaviour, IDamagable, ISpawnable
 {
     [SerializeField] private float startingNrOfLives;
     [SerializeField] private ItemController lootGameObjectToActivate;
@@ -24,6 +24,7 @@ public class GhostController : MonoBehaviour, IDamagable
     [HideInInspector] public bool hasWalkedBefore = false;
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
+    [HideInInspector] public FlashController flashController;
     [HideInInspector] public Light2D light2D;
     [HideInInspector] public PlayerController playerController;
     
@@ -42,6 +43,7 @@ public class GhostController : MonoBehaviour, IDamagable
         playerController = PlayerController.GetInstance();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        flashController = GetComponent<FlashController>();
         light2D = GetComponent<Light2D>();
         nrOfLives = startingNrOfLives;
         ChangeGhostState(new GhostStateHidden(this));
@@ -105,7 +107,7 @@ public class GhostController : MonoBehaviour, IDamagable
 
     public void ChangeGhostState(GhostState newGhostState)
     {
-        Debug.Log($"Change Ghost State [{ghostState} -> {newGhostState}]");
+        //Debug.Log($"Change Ghost State [{ghostState} -> {newGhostState}]");
         stateStartPos = transform.position;
 
         if (ghostState != null) ghostState.OnStateExit();
@@ -118,9 +120,9 @@ public class GhostController : MonoBehaviour, IDamagable
 
     public void TakeDamage(float amount)
     {
-        Debug.Log("Ghost takes dmg!!!");
+        //Debug.Log("Ghost takes dmg!!!");
         nrOfLives -= amount;
-
+        flashController.Flash(spriteRenderer);
         if (nrOfLives <= 0) ChangeGhostState(new GhostStateDying(this));
     }
 
@@ -145,5 +147,11 @@ public class GhostController : MonoBehaviour, IDamagable
         Destroy(this.gameObject);
     }
 
-
+    /// <summary>
+    /// Called by the EnemyGroupTrigger
+    /// </summary>
+    public void Spawn()
+    {
+        ChangeGhostState(new GhostStateSpawning(this));
+    }
 }
