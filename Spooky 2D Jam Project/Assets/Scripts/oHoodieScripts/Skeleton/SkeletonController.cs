@@ -24,7 +24,7 @@ public class SkeletonController : MonoBehaviour, IDamagable, ISpawnable
     private float nrOfLives;
 
     [HideInInspector] public Rigidbody2D rb;
-    [HideInInspector] public Animator animator;
+    public Animator animator;
     [HideInInspector] public FlashController flashController;
     [HideInInspector] public PlayerController playerController;
 
@@ -43,7 +43,6 @@ public class SkeletonController : MonoBehaviour, IDamagable, ISpawnable
     {
         playerController = PlayerController.GetInstance();
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         flashController = GetComponent<FlashController>();
         nrOfLives = startingNrOfLives;
         ChangeSkeletonState(new SkeletonStateHidden(this));

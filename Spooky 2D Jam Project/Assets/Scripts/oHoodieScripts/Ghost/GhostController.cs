@@ -23,9 +23,9 @@ public class GhostController : MonoBehaviour, IDamagable, ISpawnable
 
     [HideInInspector] public bool hasWalkedBefore = false;
     [HideInInspector] public Rigidbody2D rb;
-    [HideInInspector] public Animator animator;
+    public Animator animator;
     [HideInInspector] public FlashController flashController;
-    [HideInInspector] public Light2D light2D;
+    public Light2D light2D;
     [HideInInspector] public PlayerController playerController;
     
     public new Collider2D collider;
@@ -42,9 +42,7 @@ public class GhostController : MonoBehaviour, IDamagable, ISpawnable
     {
         playerController = PlayerController.GetInstance();
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         flashController = GetComponent<FlashController>();
-        light2D = GetComponent<Light2D>();
         nrOfLives = startingNrOfLives;
         ChangeGhostState(new GhostStateHidden(this));
         stateStartPos = transform.position;

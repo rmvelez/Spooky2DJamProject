@@ -126,9 +126,9 @@ MonoBehaviour:
   damageTriggerCollider: {fileID: 5333532877343469368}
   hasWalkedBefore: 0
   rb: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 2864557289356640013}
   flashController: {fileID: 0}
-  light2D: {fileID: 0}
+  light2D: {fileID: 1838489016348440499}
   playerController: {fileID: 0}
   collider: {fileID: 5091595378572643090}
   spriteRenderer: {fileID: 6813341344790583028}
