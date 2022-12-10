@@ -11,6 +11,8 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     public int minNrOfSpikeAttackRepetitions;
     public int maxNrOfSpikeAttackRepetitions;
 
+    public float flyingSpeed;
+
     public float minRoomX; // Define location and size of the boss room (used to determine where boss can move and where enemies can be spawned in)
     public float minRoomY;
     public float maxRoomX;
@@ -21,7 +23,7 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     // References
     [SerializeField] private Rigidbody2D rb;
     public Animator animator;
-    [SerializeField] private new Collider2D collider;
+    //[SerializeField] private new Collider2D collider;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private FlashController flashController;
@@ -82,9 +84,33 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     /// </summary>
     public void OnInvokeAnimFinished()
     {
+         ChangeBossState(new BossStateAboutToFly(this));
+    }
+
+
+    /// <summary>
+    /// Transition into flying state after 'windup'
+    /// </summary>
+    public void OnAboutToFlyAnimFinished()
+    {
+        ChangeBossState(new BossStateFlying(this));
+    }
+
+    /// <summary>
+    /// Return to idle state after landing anim is over
+    /// </summary>
+    public void OnLandingAnimFinished()
+    {
         ChangeBossState(new BossStateIdle(this));
     }
 
+    /// <summary>
+    /// Transition into dying state after 'windup'
+    /// </summary>
+    public void OnAboutToDieAnimFinished()
+    {
+        ChangeBossState(new BossStateDying(this));
+    }
 
 
     /// <summary>
@@ -114,6 +140,7 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     {
         animator.SetFloat("speed", -1);
     }
+
 
     public void TakeDamage(float amount)
     {

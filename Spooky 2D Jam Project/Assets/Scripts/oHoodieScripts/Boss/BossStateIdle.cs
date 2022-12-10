@@ -27,18 +27,24 @@ public class BossStateIdle : BossState
     {
         if (bossController.isSpawned)
         {
-            int nextMove = Random.Range(0, 2);
+            int nextMove = Random.Range(0, 3);
 
-            // Spike Attack
+            // Invoke enemy 
             if (nextMove == 0)
-            {
-                bossController.ChangeBossState(new BossStateSpikeAttack(bossController));
-            }
-            // Invoke enemy
-            else if (nextMove == 1)
             {
                 bossController.ChangeBossState(new BossStateInvoking(bossController));
             }
+            // Spike Attack 
+            else if (nextMove == 1)
+            {
+                bossController.ChangeBossState(new BossStateSpikeAttack(bossController));
+            }
+            // Move
+            else
+            {
+                bossController.ChangeBossState(new BossStateAboutToFly(bossController));
+            }
+
         }
     }
 }

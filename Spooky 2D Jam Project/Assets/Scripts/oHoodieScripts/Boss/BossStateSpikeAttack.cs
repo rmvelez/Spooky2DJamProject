@@ -46,6 +46,6 @@ public class BossStateSpikeAttack : BossState
     {
         Debug.Log("OnSpikeAnimFirstFrame()");
         currentNrOfRepetitions++;
-        if (currentNrOfRepetitions > nrOfRepetitions) bossController.ChangeBossState(new BossStateIdle(bossController));
+        if (currentNrOfRepetitions > nrOfRepetitions) bossController.ChangeBossState(new BossStateAboutToFly(bossController));
     }
 }
