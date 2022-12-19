@@ -19,6 +19,7 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     public float maxRoomY;
 
     public GameObject spikeSpawnerPrefab;
+    public GameObject goldenCandy;
 
     // References
     [SerializeField] private Rigidbody2D rb;
@@ -33,6 +34,7 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     private BossState bossState;
     private float currentHp;
     [HideInInspector] public bool isSpawned;
+    [HideInInspector] public bool justLanded; // used for making sure boss does not use fly twice in a row (dirty fix)
 
 
     private void Start()
@@ -56,6 +58,14 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     public void ChangeBossState(BossState newBossState)
     {
         Debug.Log($"Change Boss State [{bossState} -> {newBossState}]");
+        if(bossState != null && bossState.GetType() == typeof(BossStateLanding))
+        {
+            justLanded = true;
+        }
+        else
+        {
+            justLanded = false;
+        }
 
         if (bossState != null) bossState.OnStateExit();
         bossState = newBossState;
@@ -142,6 +152,14 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     }
 
 
+    public void OnDyingLastFrame()
+    {
+        goldenCandy.transform.position = transform.position + new Vector3(0, -.5f, 0);
+        goldenCandy.SetActive(true);
+        goldenCandy.GetComponent<Animator>().SetBool("isGolden", true);
+    }
+
+
     public void TakeDamage(float amount)
     {
         currentHp -= amount;
@@ -153,5 +171,6 @@ public class BossController : MonoBehaviour, IDamagable, ISpawnable
     public void Spawn()
     {
         isSpawned = true;
+        gameObject.SetActive(true);
     }
 }

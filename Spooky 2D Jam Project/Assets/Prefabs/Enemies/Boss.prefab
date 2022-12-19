@@ -117,18 +117,20 @@ MonoBehaviour:
   maxHp: 100
   minNrOfSpikeAttackRepetitions: 2
   maxNrOfSpikeAttackRepetitions: 4
-  flyingSpeed: 5
+  flyingSpeed: 7.5
   minRoomX: -28
   minRoomY: -3
   maxRoomX: -10
   maxRoomY: 11
   spikeSpawnerPrefab: {fileID: 7209613407336009320, guid: b876cfb577aad764f8a12abd3a48edf3, type: 3}
+  goldenCandy: {fileID: 0}
   rb: {fileID: 4609611449184201004}
   animator: {fileID: 4609611449184200995}
   audioSource: {fileID: 4131636081774640714}
   spriteRenderer: {fileID: 4609611449184200994}
   flashController: {fileID: 6249902077014298530}
   isSpawned: 0
+  justLanded: 0
 --- !u!114 &6249902077014298530
 MonoBehaviour:
   m_ObjectHideFlags: 0

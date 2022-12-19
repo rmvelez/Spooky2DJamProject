@@ -27,7 +27,7 @@ public class BossStateIdle : BossState
     {
         if (bossController.isSpawned)
         {
-            int nextMove = Random.Range(0, 3);
+            int nextMove = bossController.justLanded ? Random.Range(0, 4) : Random.Range(0, 6);
 
             // Invoke enemy 
             if (nextMove == 0)
@@ -35,7 +35,7 @@ public class BossStateIdle : BossState
                 bossController.ChangeBossState(new BossStateInvoking(bossController));
             }
             // Spike Attack 
-            else if (nextMove == 1)
+            else if (nextMove <= 3)
             {
                 bossController.ChangeBossState(new BossStateSpikeAttack(bossController));
             }
