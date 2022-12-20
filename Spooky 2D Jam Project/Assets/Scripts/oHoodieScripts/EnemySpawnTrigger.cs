@@ -24,6 +24,8 @@ public class EnemySpawnTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag != "Player") return;
+
         foreach (GameObject enemy in enemiesToSpawn)
         {
             enemy.GetComponent<ISpawnable>().Spawn();
